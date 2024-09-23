@@ -72,7 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(children: [
           Padding(
               padding: const EdgeInsets.all(10),
-              child: Row(children: [
+              child: Wrap(
+                runSpacing: 10,
+                  children: [
                 _doubleTextField(_scale, 'Scale',
                     (value) => options.withValues(scale: value)),
                 _doubleTextField(_size, 'Size',
@@ -136,22 +138,18 @@ class _MyHomePageState extends State<MyHomePage> {
       T Function() currentValue, TileOptions Function(T value) applyer) {
     return Row(
         children: values
-            .map((v) => SizedBox(
-                width: 150,
-                child: ListTile(
-                  title: Text(v.name),
-                  leading: Radio<T>(
-                    value: v,
-                    groupValue: currentValue(),
-                    onChanged: (T? value) {
-                      if (value != null) {
-                        setState(() {
-                          options = applyer(value);
-                        });
-                      }
-                    },
-                  ),
-                )))
+            .map((v) => RadioMenuButton(
+              value: v,
+              groupValue: currentValue(),
+              onChanged: (T? value) {
+                if (value != null) {
+                  setState(() {
+                    options = applyer(value);
+                  });
+                }
+              },
+              child: Text(v.name),
+            ))
             .toList());
   }
 }
